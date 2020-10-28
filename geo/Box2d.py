@@ -20,9 +20,12 @@
 #	Johannes Bauer <JohannesBauer@gmx.de>
 #
 
+import collections
 from .Vector2d import Vector2d
 
 class Box2d(object):
+	_TransformedBox = collections.namedtuple("TransformedBox", [ "v0", "v1", "dimensions" ])
+
 	def __init__(self, base, dimensions):
 		self._base = base
 		self._dimensions = dimensions
@@ -54,9 +57,13 @@ class Box2d(object):
 		return self.v0 + (self._dimensions / 2)
 
 	def transform(self, matrix):
-		v0t = matrix.transform(self.v0)
-		v1t = matrix.transform(self.v1)
-		return self.create_from_edges(v0t, v1t)
+		v0t = matrix.transform(self.v0)								# Upper left
+		v1t = matrix.transform(self.v1)								# Lower right
+		v2t = matrix.transform(Vector2d(self.v0.x, self.v1.y))		# Lower left
+
+		# Dimensions measure the lower and left image side
+		dimensions = Vector2d((v2t - v1t).length, (v2t - v0t).length)
+		return self._TransformedBox(v0 = v0t, v1 = v1t, dimensions = dimensions)
 
 	def __iter__(self):
 		yield self._base
