@@ -99,6 +99,9 @@ class Vector2d(object):
 	def __neq__(self, other):
 		return not (self == other)
 
+	def __abs__(self):
+		return Vector2d(abs(self.x), abs(self.y))
+
 	def __iter__(self):
 		yield self.x
 		yield self.y

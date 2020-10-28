@@ -27,6 +27,12 @@ class Box2d(object):
 		self._base = base
 		self._dimensions = dimensions
 
+	@classmethod
+	def create_from_edges(cls, v0, v1):
+		base = Vector2d(min(v0.x, v1.x), min(v0.y, v1.y))
+		dimensions = abs(v1 - v0)
+		return cls(base = base, dimensions = dimensions)
+
 	@property
 	def base(self):
 		return self._base
@@ -46,6 +52,11 @@ class Box2d(object):
 	@property
 	def center(self):
 		return self.v0 + (self._dimensions / 2)
+
+	def transform(self, matrix):
+		v0t = matrix.transform(self.v0)
+		v1t = matrix.transform(self.v1)
+		return self.create_from_edges(v0t, v1t)
 
 	def __iter__(self):
 		yield self._base
