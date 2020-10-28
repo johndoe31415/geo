@@ -25,3 +25,4 @@ from .Viewport2d import Viewport2d
 from .Rect2d import Rect2d
 from .TransformationMatrix import TransformationMatrix
 from .Box2d import Box2d
+from .SVGTools import SVGTools
