@@ -22,3 +22,4 @@
 
 from .Vector2dTests import Vector2dTests
 from .Viewport2dTests import Viewport2dTests
+from .SVGToolsTests import SVGToolsTests
